@@ -1,4 +1,3 @@
-import json
 from flask import Flask, jsonify, request
 from pymongo import MongoClient
 
@@ -16,7 +15,12 @@ document = {
 
 @app.route('/employees', methods=['GET'])
 def getAllEmployees():
-  return jsonify(db["employee"])
+  employees = list(collection.find())
+
+  for employee in employees:
+     employee['_id'] = str(employee['_id'])
+
+  return jsonify(employees)
 
 
 @app.route('/employees', methods=['POST'])
